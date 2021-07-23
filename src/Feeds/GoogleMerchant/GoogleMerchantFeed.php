@@ -224,6 +224,7 @@
 
 				// categories
 				'g:product_type' => $item->getProductType(),
+				'g:google_product_category' => $item->getGoogleProductCategory(),
 
 				// shipping
 				'g:shipping' => $item->getShipping(),

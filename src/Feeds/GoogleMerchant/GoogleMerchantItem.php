@@ -80,6 +80,9 @@
 		/** @var string|NULL */
 		private $productType;
 
+		/** @var string|NULL */
+		private $googleProductCategory;
+
 		/**
 		 * @return string|int
 		 */
@@ -469,6 +472,23 @@
 			return $this->productType;
 		}
 
+		/**
+		 * @return string|NULL
+		 */
+		public function getGoogleProductCategory()
+		{
+			return $this->googleProductCategory;
+		}
+
+		/**
+		 * @param string|NULL $googleProductCategory
+		 * @return static
+		 */
+		public function setGoogleProductCategory($googleProductCategory)
+		{
+			$this->googleProductCategory = $googleProductCategory;
+			return $this;
+		}
 
 		/**
 		 * @return bool
