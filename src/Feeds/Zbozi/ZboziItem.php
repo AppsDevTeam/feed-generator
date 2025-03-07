@@ -20,6 +20,9 @@
 		private $productName;
 
 		/** @var string|NULL */
+		private $product;
+
+		/** @var string|NULL */
 		private $description;
 
 		/** @var string|NULL */
@@ -27,6 +30,9 @@
 
 		/** @var string|NULL */
 		private $price;
+
+		/** @var string|NULL */
+		private $priceBeforeDiscount;
 
 		/** @var string|NULL */
 		private $deliveryDate;
@@ -37,11 +43,20 @@
 		/** @var string|NULL */
 		private $imageUrl;
 
+		/** @var string[] */
+		private $alternativeImageUrls = [];
+
 		/** @var string|NULL */
 		private $categoryText;
 
 		/** @var array<int, string> */
 		private $customLabels;
+
+		/** @var string|NULL */
+		private $manufacturer;
+
+		/** @var ZboziItemExtraMessage[] */
+		private $extraMessages = [];
 
 		/** @var string|NULL */
 		private $groupId;
@@ -83,6 +98,26 @@
 		public function setProductName($productName)
 		{
 			$this->productName = $productName;
+			return $this;
+		}
+
+
+		/**
+		 * @return string|NULL
+		 */
+		public function getProduct()
+		{
+			return $this->product;
+		}
+
+
+		/**
+		 * @param  string
+		 * @return static
+		 */
+		public function setProduct($product)
+		{
+			$this->product = $product;
 			return $this;
 		}
 
@@ -173,6 +208,28 @@
 
 
 		/**
+		 * @return string|NULL
+		 */
+		public function getPriceBeforeDiscount()
+		{
+			return $this->priceBeforeDiscount;
+		}
+
+
+		/**
+		 * @param  string|float|int|NULL
+		 * @return static
+		 */
+		public function setPriceBeforeDiscount($priceBeforeDiscount)
+		{
+			$this->priceBeforeDiscount = $priceBeforeDiscount !== NULL
+				? $this->formatPrice($priceBeforeDiscount)
+				: NULL;
+			return $this;
+		}
+
+
+		/**
 		 * @return ZboziItemParameter[]
 		 */
 		public function getParameters()
@@ -215,6 +272,26 @@
 
 
 		/**
+		 * @return string[]
+		 */
+		public function getAlternativeImageUrls()
+		{
+			return $this->alternativeImageUrls;
+		}
+
+
+		/**
+		 * @param  string
+		 * @return static
+		 */
+		public function addAlternativeImageUrl($alternativeImageUrl)
+		{
+			$this->alternativeImageUrls[] = $alternativeImageUrl;
+			return $this;
+		}
+
+
+		/**
 		 * @return string|NULL
 		 */
 		public function getCategoryText()
@@ -252,6 +329,47 @@
 		public function setCustomLabel($id, $value)
 		{
 			$this->customLabels[$id] = $value;
+			return $this;
+		}
+
+
+		/**
+		 * @return string|NULL
+		 */
+		public function getManufacturer()
+		{
+			return $this->manufacturer;
+		}
+
+
+		/**
+		 * @param  string|NULL
+		 * @return static
+		 */
+		public function setManufacturer($manufacturer)
+		{
+			$this->manufacturer = $manufacturer;
+			return $this;
+		}
+
+
+		/**
+		 * @return ZboziItemExtraMessage[]
+		 */
+		public function getExtraMessages()
+		{
+			return $this->extraMessages;
+		}
+
+
+		/**
+		 * @param  string $type
+		 * @param  string|NULL $text
+		 * @return static
+		 */
+		public function addExtraMessage($type, $text = NULL)
+		{
+			$this->extraMessages[] = new ZboziItemExtraMessage($type, $text);
 			return $this;
 		}
 

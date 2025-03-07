@@ -2,6 +2,7 @@
 
 use Inteve\FeedGenerator\Feeds\Zbozi\ZboziFeed;
 use Inteve\FeedGenerator\Feeds\Zbozi\ZboziItem;
+use Inteve\FeedGenerator\Feeds\Zbozi\ZboziItemExtraMessage;
 use Inteve\FeedGenerator\ItemsGroup;
 use Inteve\FeedGenerator\Outputs\MemoryOutput;
 use Nette\Utils\Json;
@@ -22,6 +23,8 @@ test(function () {
 		->setDescription('Lorem ipsum dolor sit amet')
 		->setUrl('http://www.example.com/product-abc/')
 		->setImageUrl('http://www.example.com/images/product-abc.jpg')
+		->addAlternativeImageUrl('http://www.example.com/images/product-abc-2.jpg')
+		->addAlternativeImageUrl('http://www.example.com/images/product-abc-3.jpg')
 		->setPrice(5)
 		->setDeliveryDate(0)
 		->setGroupId('AB12345')
@@ -37,6 +40,7 @@ test(function () {
 	$items[] = ZboziItem::create()
 		->setId('002')
 		->setProductName('Product DEF')
+		->setProduct('Product DEF Lorem ipsum')
 		->setDescription('Lorem ipsum dolor sit amet')
 		->setUrl('http://www.example.com/product-def/')
 		->setImageUrl('http://www.example.com/images/product-def.jpg')
@@ -44,7 +48,11 @@ test(function () {
 		->setCustomLabel(0, 'Letni akce')
 		->setCustomLabel(1, 'Vysoká prodejnost')
 		->setCustomLabel(3, 'Výprodej')
+		->setManufacturer('Manufacturer XYZ')
+		->addExtraMessage(ZboziItemExtraMessage::Custom, 'My custom text')
+		->addExtraMessage(ZboziItemExtraMessage::PayLater)
 		->setPrice(10.10)
+		->setPriceBeforeDiscount(20.10)
 		->setDeliveryDate(new \DateTimeImmutable('2016-02-06 18:00:00+0200', new \DateTimeZone('UTC')));
 
 	$feed->setItems($items);
@@ -61,6 +69,8 @@ test(function () {
 		'<DESCRIPTION>Lorem ipsum dolor sit amet</DESCRIPTION>',
 		'<URL>http://www.example.com/product-abc/</URL>',
 		'<IMGURL>http://www.example.com/images/product-abc.jpg</IMGURL>',
+		'<IMGURL_ALTERNATIVE>http://www.example.com/images/product-abc-2.jpg</IMGURL_ALTERNATIVE>',
+		'<IMGURL_ALTERNATIVE>http://www.example.com/images/product-abc-3.jpg</IMGURL_ALTERNATIVE>',
 		'<PRICE_VAT>5.00</PRICE_VAT>',
 		'<DELIVERY_DATE>0</DELIVERY_DATE>',
 		'<ITEMGROUP_ID>AB12345</ITEMGROUP_ID>',
@@ -85,6 +95,8 @@ test(function () {
 		'<DESCRIPTION>Lorem ipsum dolor sit amet</DESCRIPTION>',
 		'<URL>http://www.example.com/product-abc/</URL>',
 		'<IMGURL>http://www.example.com/images/product-abc.jpg</IMGURL>',
+		'<IMGURL_ALTERNATIVE>http://www.example.com/images/product-abc-2.jpg</IMGURL_ALTERNATIVE>',
+		'<IMGURL_ALTERNATIVE>http://www.example.com/images/product-abc-3.jpg</IMGURL_ALTERNATIVE>',
 		'<PRICE_VAT>5.00</PRICE_VAT>',
 		'<DELIVERY_DATE>0</DELIVERY_DATE>',
 		'<ITEMGROUP_ID>AB12345</ITEMGROUP_ID>',
@@ -106,6 +118,7 @@ test(function () {
 		'<SHOPITEM>',
 		'<ITEM_ID>002</ITEM_ID>',
 		'<PRODUCTNAME>Product DEF</PRODUCTNAME>',
+		'<PRODUCT>Product DEF Lorem ipsum</PRODUCT>',
 		'<DESCRIPTION>Lorem ipsum dolor sit amet</DESCRIPTION>',
 		'<URL>http://www.example.com/product-def/</URL>',
 		'<IMGURL>http://www.example.com/images/product-def.jpg</IMGURL>',
@@ -113,8 +126,13 @@ test(function () {
 		'<CUSTOM_LABEL_0>Letni akce</CUSTOM_LABEL_0>',
 		'<CUSTOM_LABEL_1>Vysoká prodejnost</CUSTOM_LABEL_1>',
 		'<CUSTOM_LABEL_3>Výprodej</CUSTOM_LABEL_3>',
+		'<MANUFACTURER>Manufacturer XYZ</MANUFACTURER>',
 		'<PRICE_VAT>10.10</PRICE_VAT>',
+		'<PRICE_BEFORE_DISCOUNT>20.10</PRICE_BEFORE_DISCOUNT>',
 		'<DELIVERY_DATE>2016-02-06</DELIVERY_DATE>',
+		'<EXTRA_MESSAGE>custom</EXTRA_MESSAGE>',
+		'<CUSTOM_TEXT>My custom text</CUSTOM_TEXT>',
+		'<EXTRA_MESSAGE>pay_later</EXTRA_MESSAGE>',
 		'</SHOPITEM>',
 		'</SHOP>',
 		'',

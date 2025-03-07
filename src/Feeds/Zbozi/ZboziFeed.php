@@ -70,16 +70,28 @@
 			Helpers::writeXml($output, [
 				'ITEM_ID' => $item->getId(),
 				'PRODUCTNAME' => $item->getProductName(),
+				'PRODUCT' => $item->getProduct(),
 				'DESCRIPTION' => $item->getDescription(),
 				'URL' => $item->getUrl(),
 				'IMGURL' => $item->getImageUrl(),
+			]);
+
+			foreach ($item->getAlternativeImageUrls() as $alternativeImageUrl) {
+				Helpers::writeXml($output, [
+					'IMGURL_ALTERNATIVE' => $alternativeImageUrl,
+				]);
+			}
+
+			Helpers::writeXml($output, [
 				'CATEGORYTEXT' => $item->getCategoryText(),
 				'CUSTOM_LABEL_0' => $item->getCustomLabel(0),
 				'CUSTOM_LABEL_1' => $item->getCustomLabel(1),
 				'CUSTOM_LABEL_3' => $item->getCustomLabel(3),
+				'MANUFACTURER' => $item->getManufacturer(),
 
 				// price & availability
 				'PRICE_VAT' => $item->getPrice(),
+				'PRICE_BEFORE_DISCOUNT' => $item->getPriceBeforeDiscount(),
 				'DELIVERY_DATE' => $item->getDeliveryDate(),
 
 				// group ID
@@ -94,6 +106,16 @@
 							'VAL' => $parameter->getValue(),
 							'UNIT' => $parameter->getUnit(),
 						],
+					],
+				]);
+			}
+
+			foreach ($item->getExtraMessages() as $extraMessage) {
+				Helpers::writeXml($output, [
+					'EXTRA_MESSAGE' => $extraMessage->getType(),
+					[
+						'tag' => $extraMessage->getTextTag(),
+						'content' => $extraMessage->getText(),
 					],
 				]);
 			}
